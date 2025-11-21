@@ -106,14 +106,37 @@ This drops and recreates dev.db.
 You can also manually delete:
 prisma/dev.db
 
-A new file will be created automatically on the next migration.
+Architecture Choices
 
-Roles and Permissions
-Action	User	Manager	Admin
-View tasks	Yes	—	—
-Complete tasks	Yes	—	—
-Edit profile	Yes	—	—
-Create projects	—	Yes	—
-Assign tasks	—	Yes	—
-View all users	—	—	Yes
-Manage salaries	—	—	Yes
+The app uses the Next.js App Router because it keeps the API routes and UI in the same project. This makes it easy to build full-stack features without juggling separate backends. The backend logic runs inside app/api/*, and each route maps directly to a function, similar to Express but cleaner.
+
+For the database, Prisma with SQLite was chosen because it’s simple to set up, perfect for local development, and avoids the complexity of external servers. Prisma’s schema gives a clear structure for users, tasks, projects, and salaries, while keeping migrations predictable.
+
+Authentication uses JWT, which is lightweight and works well for role-based apps. The front end decodes the token to grab the user ID and role without extra API calls.
+
+The UI is built using plain React components and minimal CSS. Instead of installing huge UI libraries, the design relies on simple CSS cards, grids, and buttons, giving full control over the layout and styling without adding extra dependencies.
+
+Role Logic
+
+The system is built around three roles with clear boundaries.
+
+User
+This role is meant for employees. They receive tasks, see deadlines and priorities, and mark things as completed. They also get a profile section that they can edit. They can only see what’s assigned to them. Nothing else.
+
+Manager
+Managers can create projects and assign tasks. They choose the user, set the title, the deadline through a date picker, and the priority. They see all their projects and the number of tasks inside each one. They do not access salary information or admin-level data.
+
+Admin
+This role handles everything related to the organization. It sees all projects, all tasks, and all users. Admin can set or update user salaries. This role is intentionally separated from task management to avoid mixing responsibilities.
+
+The dashboard switches automatically based on the role decoded from the JWT. There is no chance of a lower-level user seeing higher-level data because each dashboard component renders only if the role matches.
+
+Key Learnings
+
+Working on this project highlights how helpful clean separation can be. Splitting the dashboards by role keeps the code readable and avoids giant components full of condition checks. Another important takeaway is how effective Prisma is for managing schema changes without breaking the project. Being able to delete the SQLite file and rerun the migration makes development smooth.
+
+Handling authentication with a simple JWT decode on the client keeps things fast, and adding custom fields like birthday, phone, and bio shows how Prisma and Next.js work together cleanly.
+
+The profile editing flow also teaches how important state management is. Keeping editing mode separate from profile data prevents accidental overwrites and makes the UI predictable.
+
+Finally, building everything without big UI frameworks makes you appreciate how far simple CSS can go when the layout is organized well.
