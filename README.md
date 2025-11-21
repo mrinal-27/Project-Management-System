@@ -1,40 +1,4 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
- 
 PROJECT DOCUMENTATION 
 This project is a role-based task management system built using Next.js, Prisma, and JWT authentication. It supports three structured roles: Admin, Manager, and User, each with its own dashboard, UI components, responsibilities, and access permissions. The system includes project creation, task assignment, profile management, salary control, and a modern light/dark theme switch. All dashboards share a consistent layout with clean pastel UI styling.
 
@@ -53,3 +17,103 @@ The system uses Prisma for all database operations. Creating projects, assigning
 Sometimes during development, your Prisma migrations can go out of sync. When this happens, or when you want a completely fresh start, you can delete the SQLite database file. This file is named dev.db, located inside /prisma. After deleting it, run npx prisma migrate dev again to recreate a clean database. This is useful when tests create inconsistent data or schema changes break the current state. It resets everything instantly. You mentioned attaching screenshots in your repository to track your progress step by step. Those screenshots are helpful for debugging, documenting UI changes, and showing development evolution.
 
 This project is easy to extend. You can add more modules such as notifications, task comments, file uploads, role-based middlewares, or analytics without touching the main structure. The folder layout, API route separation, and dashboard components make the project maintainable and understandable for any developer reviewing it on GitHub.
+
+
+Project Management System
+
+This project is a role-based task management system built with Next.js, Prisma, and SQLite. It includes separate dashboards for Admin, Manager, and User, with features such as task assignment, deadlines, priority levels, salary management, profile editing, and dark mode.
+
+Features
+
+User
+View assigned tasks
+See deadlines and priorities
+Mark tasks as completed
+View and edit personal profile information (name, email, birthday, gender, phone, bio)
+Toggle between light and dark mode
+
+Manager
+Create projects
+Assign tasks to users
+Set task deadlines with a date picker
+Set priority (low, medium, high)
+View project summaries with task count
+
+Admin
+View all users
+View all projects and tasks
+Set and update user salaries
+
+Tech Stack
+Next.js App Router
+React
+TypeScript
+Prisma ORM
+SQLite database
+JWT authentication
+
+Folder Overview
+app/
+  api/
+    auth/
+      login/
+      register/
+    profile/
+      get/
+      update/
+    tasks/
+      assign/
+      complete/
+      route.ts
+    projects/
+      create/
+      route.ts
+    salary/
+      set/
+      route.ts
+    users/
+      route.ts
+  dashboard/page.tsx
+  login/page.tsx
+  register/page.tsx
+
+prisma/
+  schema.prisma
+
+Running the Project
+Install dependencies:
+npm install
+
+Generate Prisma client:
+npx prisma generate
+
+Start the development server:
+npm run dev
+
+Open:
+http://localhost:3000
+
+Environment Variables
+Create a .env file:
+
+DATABASE_URL="file:./dev.db"
+JWT_SECRET="yoursecret"
+
+Database Reset
+If SQLite starts showing drift or you want a clean database:
+npx prisma migrate reset
+This drops and recreates dev.db.
+You can also manually delete:
+prisma/dev.db
+
+A new file will be created automatically on the next migration.
+
+Roles and Permissions
+Action	User	Manager	Admin
+View tasks	Yes	—	—
+Complete tasks	Yes	—	—
+Edit profile	Yes	—	—
+Create projects	—	Yes	—
+Assign tasks	—	Yes	—
+View all users	—	—	Yes
+Manage salaries	—	—	Yes
